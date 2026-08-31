@@ -15,6 +15,9 @@ the only note that is always in context, so it stays small.
 
 ## Rules of the road
 
+The owner of these rules is [[OPERATING-CONTRACT]]; the lines below are
+the always-loaded summary, and the contract wins if they ever disagree.
+
 - One home per topic. Update the owner file; never copy a fact into a
   second note.
 - Newest wins on any conflict. Fix or retire the stale line; never keep
