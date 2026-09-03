@@ -1,13 +1,8 @@
 # agent-memory-vault
 
-An AI agent forgets everything when the session ends. This is the fix in
-its simplest durable form: a plain-file memory vault the agent reads on
-demand, writes back to as it learns, and carries across context resets.
-No database, no embeddings. A router note, one home per topic, and a
-session checkpoint, kept honest by a linter and CI.
+Plain-file memory for an AI agent: a folder of Markdown notes the agent reads on demand, writes back to as it learns, and carries across context resets. One router note, one home per topic, newest wins. No database, no embeddings. A linter and CI check the structure. Works with Claude Code out of the box.
 
-Works with Claude Code out of the box. Portable to any harness that can
-read files.
+Portable to any harness that can read files.
 
 ![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)
 
