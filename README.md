@@ -6,7 +6,7 @@ Portable to any harness that can read files.
 
 ![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)
 
-![An agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
+![Illustration: an agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
 
 ## Quick start
 
