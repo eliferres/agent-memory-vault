@@ -6,7 +6,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Unreleased
 
-Nothing yet.
+### Added
+- Added a `pyproject.toml`, so `pipx install git+https://github.com/eliferres/agent-memory-vault` installs the linter as a `vault-lint` command, with `vault-lint --version`.
 
 ## [1.1.0](https://github.com/eliferres/agent-memory-vault/releases/tag/v1.1.0) - 2026-09-03
 

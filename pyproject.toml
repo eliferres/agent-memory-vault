@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-memory-vault"
+dynamic = ["version"]
+description = "Plain-file memory for an AI agent, with a linter that checks the vault's structure."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Eli Ferres" }]
+
+[project.urls]
+Source = "https://github.com/eliferres/agent-memory-vault"
+Changelog = "https://github.com/eliferres/agent-memory-vault/blob/main/CHANGELOG.md"
+
+[project.scripts]
+vault-lint = "vault_lint:main"
+
+[tool.setuptools]
+py-modules = ["vault_lint"]
+package-dir = { "" = "tools" }
+
+[tool.setuptools.dynamic]
+version = { attr = "vault_lint.__version__" }
