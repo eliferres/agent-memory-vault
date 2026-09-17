@@ -40,13 +40,26 @@ def prose_only(text: str) -> str:
     return FENCED_BLOCK.sub("", text)
 
 
-def check_links(notes: dict[Path, str], homes: dict[str, Path]) -> list[str]:
+def find_homes(notes: dict[Path, str]) -> dict[str, list[Path]]:
+    # Every candidate is kept, in sorted order: collapsing to one path per
+    # name would silently resolve an ambiguous link to whichever came last.
+    homes: dict[str, list[Path]] = {}
+    for path in sorted(notes):
+        homes.setdefault(path.stem.lower(), []).append(path)
+    return homes
+
+
+def check_links(notes: dict[Path, str], homes: dict[str, list[Path]]) -> list[str]:
     fails = []
     for path, text in notes.items():
         for raw in WIKILINK.findall(prose_only(text)):
             target = raw.strip()
-            if target.lower() not in homes:
+            candidates = homes.get(target.lower(), [])
+            if not candidates:
                 fails.append(f"{path}: [[{target}]] resolves to nothing")
+            elif len(candidates) > 1:
+                named = ", ".join(str(c) for c in candidates)
+                fails.append(f"{path}: [[{target}]] is ambiguous, candidates: {named}")
     return fails
 
 
@@ -97,7 +110,7 @@ def check_checkpoint(root: Path) -> list[str]:
     ]
 
 
-def warn_orphans(notes: dict[Path, str], homes: dict[str, Path]) -> list[str]:
+def warn_orphans(notes: dict[Path, str], homes: dict[str, list[Path]]) -> list[str]:
     # Advisory only: a note nothing links to is invisible to the router,
     # but daily notes and the entry points are reachable by convention.
     referenced = {
@@ -108,7 +121,8 @@ def warn_orphans(notes: dict[Path, str], homes: dict[str, Path]) -> list[str]:
     exempt = {"index", "latest-session"}
     return [
         f"{path}: no note links here (unreachable from the router?)"
-        for stem, path in sorted(homes.items())
+        for stem, paths in sorted(homes.items())
+        for path in paths
         if stem not in referenced and stem not in exempt and path.parent.name != "daily"
     ]
 
@@ -127,7 +141,7 @@ def main(argv: list[str] | None = None) -> int:
         p: p.read_text(encoding="utf-8")
         for p in sorted(root.rglob("*.md"))
     }
-    homes = {p.stem.lower(): p for p in notes}
+    homes = find_homes(notes)
 
     fails = (
         check_links(notes, homes)
