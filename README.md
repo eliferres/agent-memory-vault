@@ -10,6 +10,15 @@ Portable to any harness that can read files.
 
 ## Quick start
 
+Install the linter as a command (not on PyPI; this installs from GitHub):
+
+```bash
+pipx install git+https://github.com/eliferres/agent-memory-vault
+vault-lint path/to/vault
+```
+
+Or clone the repo, which gives you the example vault and the contract too:
+
 ```bash
 git clone https://github.com/eliferres/agent-memory-vault.git
 cd agent-memory-vault

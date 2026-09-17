@@ -10,9 +10,12 @@ Stdlib only. Exit 0 when clean, 1 on any failure.
 
 Usage:
     python3 tools/vault_lint.py [vault-dir]
+    vault-lint [vault-dir]          (installed)
 """
 
 from __future__ import annotations
+
+__version__ = "1.1.0"
 
 import re
 import sys
@@ -110,8 +113,12 @@ def warn_orphans(notes: dict[Path, str], homes: dict[str, Path]) -> list[str]:
     ]
 
 
-def main() -> int:
-    root = Path(sys.argv[1] if len(sys.argv) > 1 else "vault")
+def main(argv: list[str] | None = None) -> int:
+    args = sys.argv[1:] if argv is None else argv
+    if args[:1] == ["--version"]:
+        print(f"vault-lint {__version__}")
+        return 0
+    root = Path(args[0] if args else "vault")
     if not root.is_dir():
         print(f"vault-lint: no such directory: {root}")
         return 1
