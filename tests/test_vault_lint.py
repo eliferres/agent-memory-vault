@@ -2,9 +2,12 @@
 
 Every case builds a real vault on disk and runs the real checks on it,
 including one differential test against the skeleton this repo ships:
-the shipped vault must always pass its own linter.
+the shipped vault must always pass its own linter. One further test
+holds the README's quoted contract to CLAUDE.md.
 """
 
+import difflib
+import re
 import subprocess
 import sys
 import tempfile
@@ -115,6 +118,26 @@ class VaultLintTest(unittest.TestCase):
         homes = vault_lint.find_homes(notes)
         self.assertEqual(run_checks(self.root), [])
         self.assertTrue(any("lonely" in w for w in vault_lint.warn_orphans(notes, homes)))
+
+
+class ContractBlockTest(unittest.TestCase):
+    """The README quotes CLAUDE.md under a heading that says "verbatim"."""
+
+    def test_readme_contract_block_matches_claude_md(self):
+        readme = (REPO / "README.md").read_text(encoding="utf-8")
+        contract = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
+        blocks = re.findall(r"^```markdown\n(.*?)^```$", readme, re.M | re.S)
+        self.assertEqual(len(blocks), 1, "README should quote exactly one markdown block")
+        if blocks[0] != contract:
+            drift = "".join(
+                difflib.unified_diff(
+                    contract.splitlines(keepends=True),
+                    blocks[0].splitlines(keepends=True),
+                    fromfile="CLAUDE.md",
+                    tofile="README.md contract block",
+                )
+            )
+            self.fail("the README contract block has drifted from CLAUDE.md:\n" + drift)
 
 
 if __name__ == "__main__":
