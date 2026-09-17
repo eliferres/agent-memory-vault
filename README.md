@@ -8,7 +8,7 @@ Portable to any harness that can read files.
 
 ![Illustration: an agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
 
-## Quick start
+## Install and lint the example vault
 
 Install the linter as a command (not on PyPI; this installs from GitHub):
 
@@ -25,12 +25,19 @@ cd agent-memory-vault
 python3 tools/vault_lint.py vault    # zero dependencies, Python 3.9+
 ```
 
+With the command installed, `vault-lint vault` runs the same check. On
+the shipped example vault it prints:
+
+```text
+PASS: 8 notes, 21 links, 0 failures
+```
+
 Open the folder in Claude Code and start working: the contract in
 `CLAUDE.md` wires the vault in automatically. On any other harness,
 paste `CLAUDE.md` into your system prompt and keep the vault layout.
 Then replace the example notes with your own facts.
 
-## The four ideas
+## How the vault is organized
 
 **A small router, always loaded.** `vault/INDEX.md` is the only note
 that is always in context. It maps topics to homes, so the agent finds
@@ -50,6 +57,14 @@ averaged.
 fills, the agent rewrites `vault/system/LATEST-SESSION.md`: state,
 decisions with their why, dead ends, next steps. The next session reads
 it in full and continues as if nothing was lost.
+
+**Where things live.** `vault/system/OPERATING-CONTRACT.md` holds the
+full read/write/lifecycle rules. Typed owner files sit in
+`vault/memory/`, `vault/projects/` and `vault/people/`, with one worked
+example each, and `vault/daily/` keeps the daily receipt notes, the
+audit trail. `CLAUDE.md` is the contract Claude Code auto-loads. The
+structural linter is `tools/vault_lint.py`, stdlib only, tested in
+`tests/test_vault_lint.py` against real-vault fixtures with no mocks.
 
 ## The contract, verbatim
 
@@ -88,25 +103,12 @@ skeleton outside Claude Code: paste this file into your harness's system
 prompt and keep the same vault layout.
 ```
 
-## What is in the box
-
-| Path | Role |
-|---|---|
-| `vault/INDEX.md` | The router. Always loaded, deliberately small. |
-| `vault/system/OPERATING-CONTRACT.md` | The full read/write/lifecycle rules. |
-| `vault/system/LATEST-SESSION.md` | The checkpoint, with section-by-section hints. |
-| `vault/memory/` `projects/` `people/` | Typed owner files, one worked example each. |
-| `vault/daily/` | Daily receipt notes, the audit trail. |
-| `CLAUDE.md` | The contract Claude Code auto-loads. |
-| `tools/vault_lint.py` | Structural linter, stdlib only. |
-| `tests/test_vault_lint.py` | Real-vault fixtures, no mocks. |
-
-## What the linter enforces
+## Linter checks
 
 Four invariants, each guarding a way file memory actually fails:
 
-1. Every `[[wikilink]]` resolves. A broken link is a fact the router
-   can no longer reach.
+1. Every `[[wikilink]]` resolves to exactly one note. A broken link is
+   a fact the router can no longer reach.
 2. One home per topic: no two notes share a name. Duplicate names make
    links ambiguous and mirrors inevitable.
 3. Notes in typed folders declare a `type:` in frontmatter, so tooling
@@ -136,7 +138,3 @@ memory the way it maintains code, with the same review discipline.
   turns back into bulk-loading.
 - Exercised with Claude Code. Other harnesses need the contract pasted
   manually, and their file-reading behavior may differ.
-
-## License
-
-MIT
