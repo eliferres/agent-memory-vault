@@ -43,7 +43,7 @@ def build_vault(root: Path, files: dict) -> Path:
 
 def run_checks(root: Path):
     notes = {p: p.read_text(encoding="utf-8") for p in sorted(root.rglob("*.md"))}
-    homes = {p.stem.lower(): p for p in notes}
+    homes = vault_lint.find_homes(notes)
     return (
         vault_lint.check_links(notes, homes)
         + vault_lint.check_one_home(notes)
@@ -80,6 +80,20 @@ class VaultLintTest(unittest.TestCase):
         build_vault(self.root, {"projects/prefs.md": "---\ntype: project\n---\nCopy.\n"})
         self.assertTrue(any("duplicate home" in f for f in run_checks(self.root)))
 
+    def test_link_to_duplicated_name_fails_as_ambiguous(self):
+        build_vault(self.root, {
+            "memory/budget.md": "---\ntype: memory\n---\nOne.\n",
+            "projects/budget.md": "---\ntype: project\n---\nTwo.\n",
+            "INDEX.md": "See [[prefs]], [[OPERATING-CONTRACT]] and [[budget]].\n",
+        })
+        ambiguous = [f for f in run_checks(self.root) if "[[budget]]" in f]
+        self.assertEqual(len(ambiguous), 1, ambiguous)
+        self.assertIn("ambiguous", ambiguous[0])
+        first = str(self.root / "memory" / "budget.md")
+        second = str(self.root / "projects" / "budget.md")
+        # Candidates are named in sorted order, whatever order the disk lists them.
+        self.assertIn(f"{first}, {second}", ambiguous[0])
+
     def test_missing_type_fails(self):
         build_vault(self.root, {"memory/untyped.md": "No frontmatter here.\n"})
         fails = run_checks(self.root)
@@ -98,7 +112,7 @@ class VaultLintTest(unittest.TestCase):
     def test_orphan_warns_but_does_not_fail(self):
         build_vault(self.root, {"memory/lonely.md": "---\ntype: memory\n---\nUnlinked.\n"})
         notes = {p: p.read_text(encoding="utf-8") for p in sorted(self.root.rglob("*.md"))}
-        homes = {p.stem.lower(): p for p in notes}
+        homes = vault_lint.find_homes(notes)
         self.assertEqual(run_checks(self.root), [])
         self.assertTrue(any("lonely" in w for w in vault_lint.warn_orphans(notes, homes)))
 
