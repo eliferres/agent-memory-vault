@@ -61,16 +61,35 @@ class VaultLintTest(unittest.TestCase):
         self.root = Path(self.tmp.name)
         self.addCleanup(self.tmp.cleanup)
 
-    def test_shipped_skeleton_passes(self):
-        # The real thing, end to end through the CLI: the vault this repo
-        # ships must satisfy its own linter, exit code included.
-        proc = subprocess.run(
-            [sys.executable, str(REPO / "tools" / "vault_lint.py"), str(REPO / "vault")],
+    def run_cli(self, *args):
+        return subprocess.run(
+            [sys.executable, str(REPO / "tools" / "vault_lint.py"), *args],
             capture_output=True,
             text=True,
         )
+
+    def test_shipped_skeleton_passes(self):
+        # The real thing, end to end through the CLI: the vault this repo
+        # ships must satisfy its own linter, exit code included.
+        proc = self.run_cli(str(REPO / "vault"))
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("PASS", proc.stdout)
+
+    def test_cli_exit_codes_clean_failure_and_usage(self):
+        # 0 clean, 1 lint failures, 2 usage or input error, and the usage
+        # error goes to stderr so a clean stdout still means a clean vault.
+        build_vault(self.root, {})
+        clean = self.run_cli(str(self.root))
+        self.assertEqual(clean.returncode, 0, clean.stdout + clean.stderr)
+
+        (self.root / "INDEX.md").write_text("See [[nowhere]].\n", encoding="utf-8")
+        failing = self.run_cli(str(self.root))
+        self.assertEqual(failing.returncode, 1, failing.stdout + failing.stderr)
+
+        usage = self.run_cli(str(self.root / "not-a-vault"))
+        self.assertEqual(usage.returncode, 2, usage.stdout + usage.stderr)
+        self.assertEqual(usage.stdout, "")
+        self.assertIn("no such directory", usage.stderr)
 
     def test_minimal_vault_passes(self):
         self.assertEqual(run_checks(build_vault(self.root, {})), [])
