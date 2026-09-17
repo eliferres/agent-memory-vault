@@ -9,6 +9,7 @@
 - Reorganized the README: install and a first lint run come first, with the linter's real output, and the file table now sits in the section on how the vault is organized.
 
 ### Fixed
+- Fixed a missing vault directory being reported like a lint failure: the message now goes to stderr and the exit code is 2, alongside 0 for a clean vault and 1 for failed checks.
 - Fixed a `[[link]]` to a name that two notes share passing the link check; it now fails as ambiguous and names every candidate note.
 
 ## [1.1.0](https://github.com/eliferres/agent-memory-vault/releases/tag/v1.1.0) - 2026-09-03

@@ -6,7 +6,8 @@ every [[wikilink]] resolves, every topic has exactly one home, notes that
 assert durable facts carry typed frontmatter, and the session checkpoint
 is complete enough to restore a session at full depth.
 
-Stdlib only. Exit 0 when clean, 1 on any failure.
+Stdlib only. Exit 0 when clean, 1 when the vault fails a check,
+2 on a usage or input error such as a missing vault directory.
 
 Usage:
     python3 tools/vault_lint.py [vault-dir]
@@ -134,8 +135,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     root = Path(args[0] if args else "vault")
     if not root.is_dir():
-        print(f"vault-lint: no such directory: {root}")
-        return 1
+        print(f"vault-lint: no such directory: {root}", file=sys.stderr)
+        return 2
 
     notes = {
         p: p.read_text(encoding="utf-8")
