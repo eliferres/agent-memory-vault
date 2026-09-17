@@ -9,6 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 - Added a `pyproject.toml`, so `pipx install git+https://github.com/eliferres/agent-memory-vault` installs the linter as a `vault-lint` command, with `vault-lint --version`.
 
+### Changed
+- Reorganized the README: install and a first lint run come first, with the linter's real output, and the file table now sits in the section on how the vault is organized.
+
 ### Fixed
 - Fixed a `[[link]]` to a name that two notes share passing the link check; it now fails as ambiguous and names every candidate note.
 
