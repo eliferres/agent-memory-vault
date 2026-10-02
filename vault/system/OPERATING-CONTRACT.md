@@ -16,7 +16,7 @@ of contradicting notes.
 ## Writing
 
 1. A durable fact gets written the moment it appears: to its owner file,
-   plus a one-line receipt in today's note under `daily/`.
+   plus one line saying what was written in today's note under `daily/`.
 2. One home per topic. If no home exists yet, create one and add a row
    to [[INDEX]]. If a fact seems to belong in two places, it belongs in
    one, with a link from the other.

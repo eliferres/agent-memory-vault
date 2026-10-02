@@ -66,9 +66,9 @@ it in full and continues as if nothing was lost.
 **Where things live.** `vault/system/OPERATING-CONTRACT.md` holds the
 full read/write/lifecycle rules. Typed owner files sit in
 `vault/memory/`, `vault/projects/` and `vault/people/`, with one worked
-example each, and `vault/daily/` keeps the daily receipt notes, the
-audit trail. `templates/CLAUDE.md` is the contract you copy to your
-project root, where Claude Code loads it. The structural linter is
+example each, and `vault/daily/` keeps the daily notes, one line per
+write, as the audit trail. `templates/CLAUDE.md` is the contract you
+copy to your project root, where Claude Code loads it. The structural linter is
 `tools/vault_lint.py`, stdlib only, tested in `tests/test_vault_lint.py`
 against real-vault fixtures with no mocks.
 
@@ -91,10 +91,11 @@ and read only what the task needs. Never bulk-load the vault. If two
 notes disagree, the newer line is true; fix or retire the older one.
 
 **Write.** The moment you learn a durable fact, write it to its owner
-file and add a one-line receipt to today's note in `vault/daily/`. Use
-absolute dates. One home per topic: update the owner, never copy a fact
-into a second note. When the user corrects you, update the owner in
-place and record the ruling with its why in `vault/memory/decisions.md`.
+file and add one line saying what you wrote to today's note in
+`vault/daily/`. Use absolute dates. One home per topic: update the
+owner, never copy a fact into a second note. When the user corrects
+you, update the owner in place and record the ruling with its why in
+`vault/memory/decisions.md`.
 New topic: create its home and add an INDEX row, same session.
 
 **Checkpoint.** At session end, or before you hit a context limit,
