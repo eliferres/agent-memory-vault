@@ -6,6 +6,7 @@
 - Added a `pyproject.toml`, so `pipx install git+https://github.com/eliferres/agent-memory-vault` installs the linter as a `vault-lint` command, with `vault-lint --version`.
 
 ### Changed
+- Moved the example agent contract from the repository root to `templates/CLAUDE.md`, the file you copy into your own project beside `vault/`; the README now says what to copy and where.
 - Reorganized the README: install and a first lint run come first, with the linter's real output, and the file table now sits in the section on how the vault is organized.
 
 ### Fixed

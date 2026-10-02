@@ -3,7 +3,7 @@
 Every case builds a real vault on disk and runs the real checks on it,
 including one differential test against the skeleton this repo ships:
 the shipped vault must always pass its own linter. One further test
-holds the README's quoted contract to CLAUDE.md.
+holds the README's quoted contract to templates/CLAUDE.md.
 """
 
 import difflib
@@ -140,11 +140,11 @@ class VaultLintTest(unittest.TestCase):
 
 
 class ContractBlockTest(unittest.TestCase):
-    """The README quotes CLAUDE.md under a heading that says "verbatim"."""
+    """The README quotes templates/CLAUDE.md under a heading that says "verbatim"."""
 
     def test_readme_contract_block_matches_claude_md(self):
         readme = (REPO / "README.md").read_text(encoding="utf-8")
-        contract = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
+        contract = (REPO / "templates" / "CLAUDE.md").read_text(encoding="utf-8")
         blocks = re.findall(r"^```markdown\n(.*?)^```$", readme, re.M | re.S)
         self.assertEqual(len(blocks), 1, "README should quote exactly one markdown block")
         if blocks[0] != contract:
@@ -152,11 +152,11 @@ class ContractBlockTest(unittest.TestCase):
                 difflib.unified_diff(
                     contract.splitlines(keepends=True),
                     blocks[0].splitlines(keepends=True),
-                    fromfile="CLAUDE.md",
+                    fromfile="templates/CLAUDE.md",
                     tofile="README.md contract block",
                 )
             )
-            self.fail("the README contract block has drifted from CLAUDE.md:\n" + drift)
+            self.fail("the README contract block has drifted from templates/CLAUDE.md:\n" + drift)
 
 
 if __name__ == "__main__":

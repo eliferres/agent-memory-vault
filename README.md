@@ -32,10 +32,12 @@ the shipped example vault it prints:
 PASS: 8 notes, 21 links, 0 failures
 ```
 
-Open the folder in Claude Code and start working: the contract in
-`CLAUDE.md` wires the vault in automatically. On any other harness,
-paste `CLAUDE.md` into your system prompt and keep the vault layout.
-Then replace the example notes with your own facts.
+To give your own project this memory, copy two things to its root:
+`templates/CLAUDE.md` and the `vault/` folder. Claude Code loads a
+`CLAUDE.md` at the project root on its own, so the contract wires the
+vault in from the first session. On any other harness, paste the file
+into your system prompt and keep the vault layout. Then replace the
+example notes with your own facts.
 
 ## How the vault is organized
 
@@ -62,14 +64,15 @@ it in full and continues as if nothing was lost.
 full read/write/lifecycle rules. Typed owner files sit in
 `vault/memory/`, `vault/projects/` and `vault/people/`, with one worked
 example each, and `vault/daily/` keeps the daily receipt notes, the
-audit trail. `CLAUDE.md` is the contract Claude Code auto-loads. The
-structural linter is `tools/vault_lint.py`, stdlib only, tested in
-`tests/test_vault_lint.py` against real-vault fixtures with no mocks.
+audit trail. `templates/CLAUDE.md` is the contract you copy to your
+project root, where Claude Code loads it. The structural linter is
+`tools/vault_lint.py`, stdlib only, tested in `tests/test_vault_lint.py`
+against real-vault fixtures with no mocks.
 
 ## The contract, verbatim
 
-This is the entire wiring, copied from `CLAUDE.md` (that file is the
-source of truth):
+This is the entire wiring, copied from `templates/CLAUDE.md` (that
+file is the source of truth):
 
 ```markdown
 # Memory contract
