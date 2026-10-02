@@ -101,8 +101,8 @@ New topic: create its home and add an INDEX row, same session.
 rewrite `vault/system/LATEST-SESSION.md` following the section hints in
 that file. Write it for a reader with zero context.
 
-**Verify.** After structural changes, run
-`python3 tools/vault_lint.py vault` and fix anything it reports.
+**Verify.** After structural changes, run `vault-lint vault` and fix
+anything it reports.
 
 The full rules live in `vault/system/OPERATING-CONTRACT.md`. Using this
 skeleton outside Claude Code: paste this file into your harness's system

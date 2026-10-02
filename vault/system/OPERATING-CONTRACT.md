@@ -41,7 +41,7 @@ of contradicting notes.
 Run the linter whenever structure changes:
 
 ```
-python3 tools/vault_lint.py vault
+vault-lint vault
 ```
 
 It fails on unresolvable links, duplicate homes, untyped memory notes,

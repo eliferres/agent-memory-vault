@@ -159,5 +159,16 @@ class ContractBlockTest(unittest.TestCase):
             self.fail("the README contract block has drifted from templates/CLAUDE.md:\n" + drift)
 
 
+class TakeAwayFilesTest(unittest.TestCase):
+    """templates/CLAUDE.md and vault/ are copied into someone else's project,
+    which has the installed vault-lint command but not this repo's tools/."""
+
+    def test_copied_files_name_the_installed_command(self):
+        copied = [REPO / "templates" / "CLAUDE.md"] + sorted((REPO / "vault").rglob("*.md"))
+        for path in copied:
+            self.assertNotIn("tools/vault_lint.py", path.read_text(encoding="utf-8"), path)
+        self.assertIn("`vault-lint vault`", (REPO / "templates" / "CLAUDE.md").read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
