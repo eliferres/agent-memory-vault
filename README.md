@@ -5,6 +5,9 @@ Plain-file memory for an AI agent: a folder of Markdown notes the agent reads on
 Portable to any harness that can read files.
 
 ![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)
+![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)
+![dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
 
 ![Illustration: an agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
 
