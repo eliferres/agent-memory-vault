@@ -39,8 +39,10 @@ To give your own project this memory, copy two things to its root:
 `templates/CLAUDE.md` and the `vault/` folder. Claude Code loads a
 `CLAUDE.md` at the project root on its own, so the contract wires the
 vault in from the first session. On any other harness, paste the file
-into your system prompt and keep the vault layout. Then replace the
-example notes with your own facts.
+into your system prompt and keep the vault layout. Install the linter
+with the pipx line above as well, because the contract's Verify step
+runs `vault-lint vault`. Then replace the example notes with your own
+facts.
 
 ## How the vault is organized
 
