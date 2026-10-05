@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing yet.
+
+## [1.2.0](https://github.com/eliferres/agent-memory-vault/releases/tag/v1.2.0) - 2026-10-02
+
 ### Added
 - Added a `pyproject.toml`, so `pipx install git+https://github.com/eliferres/agent-memory-vault` installs the linter as a `vault-lint` command, with `vault-lint --version`.
 
