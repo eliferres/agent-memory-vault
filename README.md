@@ -1,8 +1,6 @@
 # agent-memory-vault
 
-Plain-file memory for an AI agent: a folder of Markdown notes the agent reads on demand, writes back to as it learns, and carries across context resets. One router note, one home per topic, newest wins. No database, no embeddings. A linter and CI check the structure. Works with Claude Code out of the box.
-
-Portable to any harness that can read files.
+Plain-file memory for an AI agent: a folder of Markdown notes the agent reads on demand, writes back to as it learns, and carries across context resets. No database, no embeddings.
 
 ![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -10,6 +8,12 @@ Portable to any harness that can read files.
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
 
 ![Illustration: an agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
+
+## What it does
+
+One router note, one home per topic, newest wins. A linter and CI check the structure. Works with Claude Code out of the box.
+
+Portable to any harness that can read files.
 
 ## Install and lint the example vault
 
