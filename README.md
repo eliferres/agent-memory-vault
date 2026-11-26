@@ -2,12 +2,14 @@
 
 Plain-file memory for an AI agent: a folder of Markdown notes the agent reads on demand, writes back to as it learns, and carries across context resets. No database, no embeddings.
 
-![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)
+[![ci](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml/badge.svg)](https://github.com/eliferres/agent-memory-vault/actions/workflows/ci.yml)
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
 
 ![Illustration: an agent session booting from the vault, routing a question to one note, writing back, and checkpointing](demo/flow.svg)
+
+The [fde-agent-skills](https://github.com/eliferres/fde-agent-skills) library documents the working methods behind this tool and its sibling tools as agent skills.
 
 ## What it does
 
